@@ -1,6 +1,9 @@
 import os
 import sys
 
+directory_path: str
+output_file_path: str
+
 if len(sys.argv) == 1:
     # Custom, pre-defined paths for ease of use.
     directory_path = "/Users/mehrshadkh./Desktop/programs/uni/2/hw/hw3/HW3/src/main/java/com/example"
@@ -11,7 +14,7 @@ elif len(sys.argv) == 3:
 else:
     print("error: invalid input")
     print("usage: python3 jcombine.py source_dir target_file")
-    exit()
+    sys.exit()
 
 imports = set()
 
@@ -19,7 +22,7 @@ try:
     filenames = os.listdir(directory_path)
 except FileNotFoundError:
     print("error: not a directory")
-    exit()
+    sys.exit()
 
 for filename in filenames:
     if not filename.endswith(".java"):
@@ -28,28 +31,29 @@ if "Main.java" in filenames:
     filenames.remove("Main.java")
 else:
     print("error: no Main.java was found")
-    exit()
+    sys.exit()
 filenames.insert(0, "Main.java")
 
 for filename in filenames:
-    input_file = open(os.path.join(directory_path, filename), "r")
+    input_file = open(os.path.join(directory_path, filename), "r", encoding="utf-8")
 
     while True:
         line = input_file.readline()
 
         if not line or line.startswith("public"):
             break
-        elif line.startswith("import"):
+
+        if line.startswith("import"):
             imports.add(line)
     input_file.close()
 
 try:
-    output_file = open(output_file_path, "w")
+    output_file = open(output_file_path, "w", encoding="utf-8")
 except OSError:
     print("error: file doesn't exist")
-    exit()
+    sys.exit()
 
-input_file = open(os.path.join(directory_path, "Main.java"), "r")
+input_file = open(os.path.join(directory_path, "Main.java"), "r", encoding="utf-8")
 line = input_file.readline()
 if line.startswith("package"):
     # Whether to the include package name.
@@ -72,7 +76,7 @@ while True:
 input_file.close()
 
 for filename in filenames:
-    input_file = open(os.path.join(directory_path, filename), "r")
+    input_file = open(os.path.join(directory_path, filename), "r", encoding="utf-8")
 
     while True:
         line = input_file.readline()
