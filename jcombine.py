@@ -3,6 +3,35 @@
 import os
 import sys
 
+def remove_element_ending_with(txt, list):
+    """Returns true if found and removed, otherwise false."""
+    for item in list:
+        if item.endswith(txt):
+            list.remove(item)
+            return True
+
+    return False
+
+def get_java_files(file_paths):
+    """Returns all files paths ending with .java"""
+    # This technique is known as list comprehension.
+    final_file_paths = [file_path for file_path in file_paths if file_path.endswith(".java")]
+    
+    return final_file_paths
+
+
+def get_all_file_paths(directory_path: str):
+    """Retrieve full file paths to all the files in the current directory and all subsequent subdirecctories."""
+    file_paths = []
+    for dirpath, dirnames, filenames in os.walk(directory_path):
+        for filename in filenames:
+            file_paths.append(os.path.join(dirpath, filename))
+
+        for dirname in dirnames:
+            file_paths.extend(get_all_file_paths(os.path.join(dirpath, dirname)))
+
+    return file_paths
+
 directory_path: str
 output_file_path: str
 
@@ -21,26 +50,30 @@ else:
 imports = set()
 
 try:
-    filenames = os.listdir(directory_path)
+    file_paths = get_all_file_paths(directory_path)
 except FileNotFoundError:
     print("error: not a directory")
     sys.exit()
 
-for filename in filenames:
-    if not filename.endswith(".java"):
-        filenames.remove(filename)
+file_paths = get_java_files(file_paths)
 
 main_filename = output_file_path.split("/")[-1]
+main_file_path: str
 
-if main_filename in filenames:
-    filenames.remove(main_filename)
-else:
-    print(f"error: no {main_filename} was found")
-    sys.exit()
-filenames.insert(0, main_filename)
+for file_path in file_paths:
+    if file_path.endswith(main_filename):
+        main_file_path = file_path
+        file_paths.remove(file_path)
 
-for filename in filenames:
-    input_file = open(os.path.join(directory_path, filename), "r", encoding="utf-8")
+# Can be done more simply.
+# if not remove_element_ending_with(main_filename, file_paths):
+#     print(f"error: no {main_filename} was found")
+#     sys.exit()
+file_paths.insert(0, main_file_path)
+
+for file_path in file_paths:
+    # Use with.
+    input_file = open(file_path, "r", encoding="utf-8")
 
     while True:
         line = input_file.readline()
@@ -52,36 +85,40 @@ for filename in filenames:
             imports.add(line)
     input_file.close()
 
+java_imports = [import_statement for import_statement in imports if import_statement.startswith("import java")]
+
 try:
     output_file = open(output_file_path, "w", encoding="utf-8")
 except OSError:
     print("error: file doesn't exist")
     sys.exit()
 
-input_file = open(os.path.join(directory_path, main_filename), "r", encoding="utf-8")
+input_file = open(main_file_path, "r", encoding="utf-8")
 line = input_file.readline()
 if line.startswith("package"):
-    # Whether to the include package name.
-    output_file.write(line)
-    # pass
+    # Whether to include package name.
+    # output_file.write(line)
+    pass
 output_file.write("\n")
 
-for line in imports:
+for line in java_imports:
     output_file.write(line)
 
-filenames.remove(main_filename)
+file_paths.remove(main_file_path)
 while True:
     line = input_file.readline()
 
     if not line:
         break
-    elif line.startswith("import"):
+    
+    if line.startswith("import"):
         continue
+
     output_file.write(line)
 input_file.close()
 
-for filename in filenames:
-    input_file = open(os.path.join(directory_path, filename), "r", encoding="utf-8")
+for file_path in file_paths:
+    input_file = open(file_path, "r", encoding="utf-8")
 
     while True:
         line = input_file.readline()
