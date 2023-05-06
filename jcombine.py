@@ -22,13 +22,17 @@ def get_java_files(file_paths):
 
 def get_all_file_paths(directory_path: str):
     """Retrieve full file paths to all the files in the current directory and all subsequent subdirecctories."""
-    file_paths = []
+    # Severe error: returns repeated list of file paths.
+    # file_paths = []
+    file_paths = set()
     for dirpath, dirnames, filenames in os.walk(directory_path):
         for filename in filenames:
-            file_paths.append(os.path.join(dirpath, filename))
+            # file_paths.append(os.path.join(dirpath, filename))
+            file_paths.add(os.path.join(dirpath, filename))
 
         for dirname in dirnames:
-            file_paths.extend(get_all_file_paths(os.path.join(dirpath, dirname)))
+            # file_paths.extend(get_all_file_paths(os.path.join(dirpath, dirname)))
+            file_paths.update(get_all_file_paths(os.path.join(dirpath, dirname)))
 
     return file_paths
 
@@ -37,8 +41,10 @@ output_file_path: str
 
 if len(sys.argv) == 1:
     # Custom, pre-defined paths for ease of use.
-    directory_path = "/Users/mehrshadkh./Desktop/programs/uni/2/hw/hw3/HW3/src/main/java/com/example"
-    output_file_path = "/Users/mehrshadkh./Desktop/temp/main/Main.java"
+    # directory_path = "/Users/mehrshadkh./Desktop/programs/uni/2/hw/hw3/HW3/src/main/java/com/example"
+    # output_file_path = "/Users/mehrshadkh./Desktop/temp/main/Main.java"
+    directory_path = "/Users/mehrshadkh./Desktop/temp/parsa-test/HW3_Q1/src/library"
+    output_file_path = "/Users/mehrshadkh./Desktop/Main.java"
 elif len(sys.argv) == 3:
     directory_path = sys.argv[1]
     output_file_path = sys.argv[2]
@@ -48,6 +54,9 @@ else:
     sys.exit()
 
 imports = set()
+
+# file_paths = []
+file_paths = set()
 
 try:
     file_paths = get_all_file_paths(directory_path)
