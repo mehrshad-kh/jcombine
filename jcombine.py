@@ -1,3 +1,5 @@
+"""jcombine.py"""
+
 import os
 import sys
 
@@ -27,12 +29,15 @@ except FileNotFoundError:
 for filename in filenames:
     if not filename.endswith(".java"):
         filenames.remove(filename)
-if "Main.java" in filenames:
-    filenames.remove("Main.java")
+
+main_filename = output_file_path.split("/")[-1]
+
+if main_filename in filenames:
+    filenames.remove(main_filename)
 else:
-    print("error: no Main.java was found")
+    print(f"error: no {main_filename} was found")
     sys.exit()
-filenames.insert(0, "Main.java")
+filenames.insert(0, main_filename)
 
 for filename in filenames:
     input_file = open(os.path.join(directory_path, filename), "r", encoding="utf-8")
@@ -53,18 +58,18 @@ except OSError:
     print("error: file doesn't exist")
     sys.exit()
 
-input_file = open(os.path.join(directory_path, "Main.java"), "r", encoding="utf-8")
+input_file = open(os.path.join(directory_path, main_filename), "r", encoding="utf-8")
 line = input_file.readline()
 if line.startswith("package"):
     # Whether to the include package name.
-    # output_file.write(line)
-    pass
+    output_file.write(line)
+    # pass
 output_file.write("\n")
 
 for line in imports:
     output_file.write(line)
 
-filenames.remove("Main.java")
+filenames.remove(main_filename)
 while True:
     line = input_file.readline()
 
@@ -84,9 +89,11 @@ for filename in filenames:
         if not line:
             output_file.write("\n")
             break
-        elif line.startswith("import") or line.startswith("package"):
+        
+        if line.startswith("import") or line.startswith("package"):
             continue
-        elif (line.startswith("public class")
+
+        if (line.startswith("public class")
                 or line.startswith("public abstract class")
                 or line.startswith("public enum")
                 or line.startswith("public interface")):
