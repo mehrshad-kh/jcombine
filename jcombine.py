@@ -22,9 +22,15 @@ def get_java_files(file_paths):
 
 def get_all_file_paths(directory_path: str):
     """Retrieve full file paths to all the files in the current directory and all subsequent subdirecctories."""
-    # Severe error: returns repeated list of file paths.
+    # Serious error: returns repeated list of file paths.
     # file_paths = []
     file_paths = set()
+
+    # result = os.walk(directory_path)
+    # for item in result:
+    #     print(f"{item[0]}; {item[1]}; {item[2]}")
+    #     break
+
     for dirpath, dirnames, filenames in os.walk(directory_path):
         for filename in filenames:
             # file_paths.append(os.path.join(dirpath, filename))
@@ -33,7 +39,10 @@ def get_all_file_paths(directory_path: str):
         for dirname in dirnames:
             # file_paths.extend(get_all_file_paths(os.path.join(dirpath, dirname)))
             file_paths.update(get_all_file_paths(os.path.join(dirpath, dirname)))
+        break
 
+    # for file_path in file_paths:
+    #     print(file_path)
     return file_paths
 
 directory_path: str
@@ -101,6 +110,8 @@ try:
 except OSError:
     print("error: file doesn't exist")
     sys.exit()
+
+output_file.write("// Combined into a single file with jcombine\n")
 
 input_file = open(main_file_path, "r", encoding="utf-8")
 line = input_file.readline()
