@@ -50,10 +50,10 @@ output_file_path: str
 
 if len(sys.argv) == 1:
     # Custom, pre-defined paths for ease of use.
-    # directory_path = "/Users/mehrshadkh./Desktop/programs/uni/2/hw/hw3/HW3/src/main/java/com/example"
-    # output_file_path = "/Users/mehrshadkh./Desktop/temp/main/Main.java"
-    directory_path = "/Users/mehrshadkh./Desktop/temp/parsa-test/HW3_Q1/src/library"
-    output_file_path = "/Users/mehrshadkh./Desktop/Main.java"
+    directory_path = "/Users/mehrshadkh./Desktop/programs/uni/2/hw/hw3/HW3/src/main/java/com/example"
+    output_file_path = "/Users/mehrshadkh./Desktop/temp/main/Main.java"
+    # directory_path = "/Users/mehrshadkh./Desktop/temp/parsa-test/HW3_Q1/src/library"
+    # output_file_path = "/Users/mehrshadkh./Desktop/Main.java"
 elif len(sys.argv) == 3:
     directory_path = sys.argv[1]
     output_file_path = sys.argv[2]
