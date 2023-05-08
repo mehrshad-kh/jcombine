@@ -60,17 +60,14 @@ if not os.path.isdir(directory_path):
 imports = set()
 
 file_paths = get_all_file_paths(directory_path)
-
 file_paths = get_java_files(file_paths)
 
 main_filename = output_file_path.split("/")[-1]
-
 if not contains_item_ending_with(main_filename, file_paths):
     print(f"error: no {main_filename} found in {directory_path}")
     sys.exit()
 
 main_file_path: str
-
 for file_path in file_paths:
     if file_path.endswith(main_filename):
         main_file_path = file_path
@@ -102,7 +99,7 @@ output_file.write("// Combined into a single file with jcombine\n")
 with open(main_file_path, "r", encoding="utf-8") as input_file:
     line = input_file.readline()
     if line.startswith("package"):
-        # Whether to include package name.
+        # Whether to include the package name.
         # output_file.write(line)
         pass
     output_file.write("\n")
