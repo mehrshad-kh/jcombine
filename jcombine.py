@@ -3,6 +3,14 @@
 import os
 import sys
 
+def contains_item_ending_with(txt: str, strings):
+    """Returns true if the list contains and item ending with txt"""
+    for string in strings:
+        if string.endswith(txt):
+            return True
+        
+    return False
+
 def remove_element_ending_with(txt, my_list):
     """Returns true if found and removed, otherwise false."""
     for item in my_list:
