@@ -3,11 +3,11 @@
 import os
 import sys
 
-def remove_element_ending_with(txt, list):
+def remove_element_ending_with(txt, my_list):
     """Returns true if found and removed, otherwise false."""
-    for item in list:
+    for item in my_list:
         if item.endswith(txt):
-            list.remove(item)
+            my_list.remove(item)
             return True
 
     return False
