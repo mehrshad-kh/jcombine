@@ -125,6 +125,7 @@ for file_path in file_paths:
             line = input_file.readline()
 
             if not line:
+                output_file.write("\n")
                 break
 
             if line.startswith("import") or line.startswith("package"):
