@@ -38,104 +38,108 @@ def get_all_file_paths(directory_path: str):
 
     return file_paths
 
-directory_path: str
-output_file_path: str
+def main():
+    directory_path: str
+    output_file_path: str
 
-if len(sys.argv) == 1:
-    # Custom, pre-defined paths for ease of use.
-    directory_path = "/Users/mehrshadkh./Desktop/programs/uni/2/hw/hw3/HW3/src/main/java/com/example"
-    output_file_path = "/Users/mehrshadkh./Desktop/temp/main/Main.java"
-elif len(sys.argv) == 3:
-    directory_path = sys.argv[1]
-    output_file_path = sys.argv[2]
-else:
-    print("error: invalid input")
-    print("usage: python3 jcombine.py source_dir target_file")
-    sys.exit()
+    if len(sys.argv) == 1:
+        # Custom, pre-defined paths for ease of use.
+        directory_path = "/Users/mehrshadkh./Desktop/programs/uni/2/hw/hw3/HW3/src/main/java/com/example"
+        output_file_path = "/Users/mehrshadkh./Desktop/temp/main/Main.java"
+    elif len(sys.argv) == 3:
+        directory_path = sys.argv[1]
+        output_file_path = sys.argv[2]
+    else:
+        print("error: invalid input")
+        print("usage: python3 jcombine.py source_dir target_file")
+        sys.exit()
 
-if not os.path.isdir(directory_path):
-    print("error: not a directory")
-    sys.exit()
+    if not os.path.isdir(directory_path):
+        print("error: not a directory")
+        sys.exit()
 
-imports = set()
+    imports = set()
 
-file_paths = get_all_file_paths(directory_path)
-file_paths = get_java_files(file_paths)
+    file_paths = get_all_file_paths(directory_path)
+    file_paths = get_java_files(file_paths)
 
-main_filename = output_file_path.split("/")[-1]
-if not contains_item_ending_with(main_filename, file_paths):
-    print(f"error: no {main_filename} found in {directory_path}")
-    sys.exit()
+    main_filename = output_file_path.split("/")[-1]
+    if not contains_item_ending_with(main_filename, file_paths):
+        print(f"error: no {main_filename} found in {directory_path}")
+        sys.exit()
 
-main_file_path: str
-for file_path in file_paths:
-    if file_path.endswith(main_filename):
-        main_file_path = file_path
-        break
-
-file_paths.insert(0, file_paths.pop(file_paths.index(main_file_path)))
-
-for file_path in file_paths:
-    with open(file_path, "r", encoding="utf-8") as input_file:
-        while True:
-            line = input_file.readline()
-
-            if not line or line.startswith("public"):
-                break
-
-            if line.startswith("import"):
-                imports.add(line)
-
-java_imports = [import_statement for import_statement in imports if import_statement.startswith("import java")]
-
-try:
-    output_file = open(output_file_path, "w", encoding="utf-8")
-except OSError:
-    print("error: cannot open output file")
-    sys.exit()
-
-output_file.write("// Combined into a single file with jcombine\n")
-
-with open(main_file_path, "r", encoding="utf-8") as input_file:
-    line = input_file.readline()
-    if line.startswith("package"):
-        # Whether to include the package name.
-        # output_file.write(line)
-        pass
-    output_file.write("\n")
-
-    for line in java_imports:
-        output_file.write(line)
-
-    file_paths.remove(main_file_path)
-    while True:
-        line = input_file.readline()
-
-        if not line:
+    main_file_path: str
+    for file_path in file_paths:
+        if file_path.endswith(main_filename):
+            main_file_path = file_path
             break
-        
-        if line.startswith("import"):
-            continue
 
-        output_file.write(line)
+    file_paths.insert(0, file_paths.pop(file_paths.index(main_file_path)))
 
-for file_path in file_paths:
-    with open(file_path, "r", encoding="utf-8") as input_file:
+    for file_path in file_paths:
+        with open(file_path, "r", encoding="utf-8") as input_file:
+            while True:
+                line = input_file.readline()
+
+                if not line or line.startswith("public"):
+                    break
+
+                if line.startswith("import"):
+                    imports.add(line)
+
+    java_imports = [import_statement for import_statement in imports if import_statement.startswith("import java")]
+
+    try:
+        output_file = open(output_file_path, "w", encoding="utf-8")
+    except OSError:
+        print("error: cannot open output file")
+        sys.exit()
+
+    output_file.write("// Combined into a single file with jcombine\n")
+
+    with open(main_file_path, "r", encoding="utf-8") as input_file:
+        line = input_file.readline()
+        if line.startswith("package"):
+            # Whether to include the package name.
+            # output_file.write(line)
+            pass
+        output_file.write("\n")
+
+        for line in java_imports:
+            output_file.write(line)
+
+        file_paths.remove(main_file_path)
         while True:
             line = input_file.readline()
 
             if not line:
-                output_file.write("\n")
                 break
-
-            if line.startswith("import") or line.startswith("package"):
+            
+            if line.startswith("import"):
                 continue
 
-            if (line.startswith("public class")
-                    or line.startswith("public abstract class")
-                    or line.startswith("public enum")
-                    or line.startswith("public interface")):
-                line = line.removeprefix("public ")
             output_file.write(line)
 
-output_file.close()
+    for file_path in file_paths:
+        with open(file_path, "r", encoding="utf-8") as input_file:
+            while True:
+                line = input_file.readline()
+
+                if not line:
+                    output_file.write("\n")
+                    break
+
+                if line.startswith("import") or line.startswith("package"):
+                    continue
+
+                if (line.startswith("public class")
+                        or line.startswith("public abstract class")
+                        or line.startswith("public enum")
+                        or line.startswith("public interface")):
+                    line = line.removeprefix("public ")
+                output_file.write(line)
+
+    output_file.close()
+
+if __name__ == '__main__':
+    main()
