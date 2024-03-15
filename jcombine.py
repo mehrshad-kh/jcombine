@@ -44,18 +44,28 @@ def main():
 
     if len(sys.argv) == 1:
         # Custom, pre-defined paths for ease of use.
-        directory_path = "/Users/mehrshadkh./Desktop/programs/uni/2/hw/hw3/HW3/src/main/java/com/example"
-        output_file_path = "/Users/mehrshadkh./Desktop/temp/main/Main.java"
+        directory_path = "$HOME/Desktop/programs/uni/2/hw/hw3/HW3/src/main/java/com/example"
+        output_file_path = "$HOME/Desktop/temp/main/Main.java"
+    elif len(sys.argv) == 2:
+        if sys.argv[1] == '-h' or sys.argv[1] == '--help':
+            print("usage: python3 jcombine.py source_dir target_file")
+            print("       A source file with the same name as the target file ")
+            print("       must be present in the source directory (or its subdirectories).")
+            sys.exit()
     elif len(sys.argv) == 3:
         directory_path = sys.argv[1]
         output_file_path = sys.argv[2]
     else:
-        print("error: invalid input")
-        print("usage: python3 jcombine.py source_dir target_file")
+        print("error: invalid input", file=sys.stderr)
+        print("usage: python3 jcombine.py source_dir target_file", file=sys.stderr)
         sys.exit()
 
+    # Expand variables in paths.
+    directory_path = os.path.expandvars(directory_path)
+    output_file_path = os.path.expandvars(output_file_path)
+
     if not os.path.isdir(directory_path):
-        print("error: not a directory")
+        print(f"error: {directory_path} does not exist or is not a directory", file=sys.stderr)
         sys.exit()
 
     imports = set()
@@ -65,7 +75,7 @@ def main():
 
     main_filename = output_file_path.split("/")[-1]
     if not contains_item_ending_with(main_filename, file_paths):
-        print(f"error: no {main_filename} found in {directory_path}")
+        print(f"error: no {main_filename} found in {directory_path}", file=sys.stderr)
         sys.exit()
 
     main_file_path: str
@@ -92,10 +102,10 @@ def main():
     try:
         output_file = open(output_file_path, "w", encoding="utf-8")
     except OSError:
-        print("error: cannot open output file")
+        print("error: cannot open output file", file=sys.stderr)
         sys.exit()
 
-    output_file.write("// Combined into a single file with jcombine\n")
+    output_file.write("// Combined into a single file with jcombine.py\n")
 
     with open(main_file_path, "r", encoding="utf-8") as input_file:
         line = input_file.readline()
