@@ -56,8 +56,9 @@ def main():
         directory_path = sys.argv[1]
         output_file_path = sys.argv[2]
     else:
-        print("error: invalid input", file=sys.stderr)
+        print("error: invalid usage", file=sys.stderr)
         print("usage: python3 jcombine.py source_dir target_file", file=sys.stderr)
+        print("use `--help' option for more help", file=sys.stderr)
         sys.exit()
 
     # Expand variables in paths.
