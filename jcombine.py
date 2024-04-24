@@ -3,7 +3,20 @@
 import os
 import sys
 
-def contains_item_ending_with(txt: str, strings):
+def has_main_method(file) -> bool:
+    with open(file, "r", encoding="utf-8") as input_file:
+        while True:
+            line = input_file.readline()
+
+            if line.startswith("public static void main"):
+                return True
+
+            if not line:
+                break
+
+        return False
+
+def contains_item_ending_with(txt: str, strings) -> bool:
     """Returns true if the list contains and item ending with 'txt'."""
     for string in strings:
         if string.endswith(txt):
@@ -11,7 +24,7 @@ def contains_item_ending_with(txt: str, strings):
         
     return False
 
-def remove_element_ending_with(txt, my_list):
+def remove_element_ending_with(txt, my_list) -> bool:
     """Returns true if found and removed, otherwise false."""
     for item in my_list:
         if item.endswith(txt):
@@ -83,6 +96,11 @@ def main():
     main_filename = os.path.basename(output_file_path)
     if not contains_item_ending_with(main_filename, file_paths):
         print(f"error: no {main_filename} found in {directory_path}", file=sys.stderr)
+        sys.exit()
+
+    main_file_path_in_directory_path = os.path.join(directory_path, main_filename) 
+    if not has_main_method(main_file_path_in_directory_path):
+        print(f"error: {main_file_path_in_directory_path} does not include the main method, i.e., public static void main(...)", file=sys.stderr)
         sys.exit()
 
     main_file_path: str
