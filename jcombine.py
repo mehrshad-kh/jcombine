@@ -4,7 +4,7 @@ import os
 import sys
 
 def contains_item_ending_with(txt: str, strings):
-    """Returns true if the list contains and item ending with txt"""
+    """Returns true if the list contains and item ending with 'txt'."""
     for string in strings:
         if string.endswith(txt):
             return True
@@ -21,7 +21,7 @@ def remove_element_ending_with(txt, my_list):
     return False
 
 def get_java_files(file_paths):
-    """Returns all files paths ending with .java"""
+    """Returns all files paths ending in '.java'."""
     # This technique is known as list comprehension.
     final_file_paths = [file_path for file_path in file_paths if file_path.endswith(".java")]
     
@@ -61,7 +61,7 @@ def main():
         print("use `--help' option for more help", file=sys.stderr)
         sys.exit()
 
-    # Expand variables in paths.
+    # Expand shell variables in paths.
     directory_path = os.path.expandvars(directory_path)
     output_file_path = os.path.expandvars(output_file_path)
 
@@ -73,6 +73,12 @@ def main():
 
     file_paths = get_all_file_paths(directory_path)
     file_paths = get_java_files(file_paths)
+
+    dirname_of_output_file = os.path.dirname(output_file_path)
+    if dirname_of_output_file == directory_path:
+        print("error: target_file shall not be in source_dir", file=sys.stderr)
+        print("       please provide another location for target_file", file=sys.stderr)
+        sys.exit()
 
     main_filename = output_file_path.split("/")[-1]
     if not contains_item_ending_with(main_filename, file_paths):
