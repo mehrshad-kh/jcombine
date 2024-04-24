@@ -40,7 +40,6 @@ def get_java_files(file_paths):
     
     return final_file_paths
 
-
 def get_all_file_paths(directory_path: str):
     """Retrieve full file paths to all the files in the current directory and all subsequent subdirecctories."""
     file_paths = []
@@ -74,7 +73,7 @@ def main():
         print("use `--help' option for more help", file=sys.stderr)
         sys.exit()
 
-    # Expand shell variables in paths.
+    # Expand shell variables in each path.
     directory_path = os.path.expandvars(directory_path)
     output_file_path = os.path.expandvars(output_file_path)
 
@@ -100,7 +99,8 @@ def main():
 
     main_file_path_in_directory_path = os.path.join(directory_path, main_filename) 
     if not has_main_method(main_file_path_in_directory_path):
-        print(f"error: {main_file_path_in_directory_path} does not include the main method, i.e., public static void main(...)", file=sys.stderr)
+        print(f"error: {main_file_path_in_directory_path} does not include \
+            the main method, i.e., public static void main(...)", file=sys.stderr)
         sys.exit()
 
     main_file_path: str
