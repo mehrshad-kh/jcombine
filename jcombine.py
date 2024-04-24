@@ -80,7 +80,7 @@ def main():
         print("       please provide another location for target_file", file=sys.stderr)
         sys.exit()
 
-    main_filename = output_file_path.split("/")[-1]
+    main_filename = os.path.basename(output_file_path)
     if not contains_item_ending_with(main_filename, file_paths):
         print(f"error: no {main_filename} found in {directory_path}", file=sys.stderr)
         sys.exit()
