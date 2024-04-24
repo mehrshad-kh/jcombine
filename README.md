@@ -16,8 +16,11 @@ Use `jcombine.py --help` for more help.
 This script was written during the Advanced Programming course I took at [Tehran Polytechnic (AUT)][1],
 in order for me and my friends to easily upload a single Java file to [Quera][2], where our exercises where hosted.
 
-## Say Thanks
-In case you find this script useful, I would be glad if you could give it a star.
+## Contribution
+If you find any problems or have any suggestions, feel free to open a pull request and get in touch with me.
+
+## Gratitude
+In case you find this script useful, I'd be glad if you could give it a star.
 
 [1]: https://aut.ac.ir/en
 [2]: https://quera.org/
