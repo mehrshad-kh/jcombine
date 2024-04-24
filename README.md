@@ -17,7 +17,7 @@ This script was written during the Advanced Programming course I took at [Tehran
 in order for me and my friends to easily upload a single Java file to [Quera][2], where our exercises where hosted.
 
 ## Contribution
-If you find any problems or have any suggestions, feel free to open a pull request and get in touch with me.
+If you find any problems or have any suggestions, feel free to open a pull request or start an issue and get in touch with me.
 
 ## Gratitude
 In case you find this script useful, I'd be glad if you could give it a star.
