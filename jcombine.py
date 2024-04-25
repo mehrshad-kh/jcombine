@@ -35,13 +35,14 @@ def remove_element_ending_with(txt, my_list) -> bool:
 
 def get_java_files(file_paths):
     """Returns all files paths ending in '.java'."""
-    # This technique is known as list comprehension.
-    final_file_paths = [file_path for file_path in file_paths if file_path.endswith(".java")]
+    final_file_paths = [file_path for file_path in file_paths \
+            if file_path.endswith(".java")]
     
     return final_file_paths
 
 def get_all_file_paths(directory_path: str):
-    """Retrieve full file paths to all the files in the current directory and all subsequent subdirecctories."""
+    """Retrieve full file paths to all the files in the current directory """
+    """and all subsequent subdirecctories."""
     file_paths = []
 
     for dirpath, dirnames, filenames in os.walk(directory_path):
@@ -56,7 +57,8 @@ def main():
 
     if len(sys.argv) == 1:
         # Custom, pre-defined paths for ease of use.
-        directory_path = "$HOME/Desktop/programs/uni/2/hw/hw3/HW3/src/main/java/com/example"
+        directory_path = "$HOME/Desktop/programs/uni/2/hw/"
+        "hw3/HW3/src/main/java/com/example"
         output_file_path = "$HOME/Desktop/temp/main/Main.java"
     elif len(sys.argv) == 2:
         if sys.argv[1] == '-h' or sys.argv[1] == '--help':
@@ -78,7 +80,8 @@ def main():
     output_file_path = os.path.expandvars(output_file_path)
 
     if not os.path.isdir(directory_path):
-        print(f"error: {directory_path} does not exist or is not a directory", file=sys.stderr)
+        print(f"error: {directory_path} does not exist or is not a directory", \
+                file=sys.stderr)
         sys.exit()
 
     imports = set()
@@ -88,19 +91,22 @@ def main():
 
     dirname_of_output_file = os.path.dirname(output_file_path)
     if dirname_of_output_file == directory_path:
-        print("error: target_file shall not be in source_dir", file=sys.stderr)
-        print("       please provide another location for target_file", file=sys.stderr)
+        print("error: target_file shall not be in source_dir", \
+                file=sys.stderr)
+        print("       please provide another location for target_file", \
+                file=sys.stderr)
         sys.exit()
 
     main_filename = os.path.basename(output_file_path)
     if not contains_item_ending_with(main_filename, file_paths):
-        print(f"error: no {main_filename} found in {directory_path}", file=sys.stderr)
+        print(f"error: no {main_filename} found in {directory_path}", \
+                file=sys.stderr)
         sys.exit()
 
     main_file_path_in_directory_path = os.path.join(directory_path, main_filename) 
     if not has_main_method(main_file_path_in_directory_path):
-        print(f"error: {main_file_path_in_directory_path} does not include \
-            the main method, i.e., public static void main(...)", file=sys.stderr)
+        print(f"error: {main_filename} does not include "
+        "the main method, i.e., public static void main(...)", file=sys.stderr)
         sys.exit()
 
     main_file_path: str
@@ -122,7 +128,8 @@ def main():
                 if line.startswith("import"):
                     imports.add(line)
 
-    java_imports = [import_statement for import_statement in imports if import_statement.startswith("import java")]
+    java_imports = [import_statement for import_statement in imports \
+            if import_statement.startswith("import java")]
 
     try:
         output_file = open(output_file_path, "w", encoding="utf-8")
