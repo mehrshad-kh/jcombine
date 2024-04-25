@@ -3,10 +3,10 @@
 import os
 import sys
 
-version_number = "1.0.0"
-credits = "Created by Mehrshad Khansarian at Tehran Polytechnic"
-start_date = "Started Ordibehesht '82"
-last_update = "Last updated Ordibehesht '83"
+VERSION_NUMBER = "1.0.0"
+CREDITS = "Created by Mehrshad Khansarian at Tehran Polytechnic"
+START_DATE = "Started Ordibehesht '82"
+LAST_UPDATE = "Last updated Ordibehesht '83"
 
 def has_main_method(file) -> bool:
     with open(file, "r", encoding="utf-8") as input_file:
@@ -73,10 +73,10 @@ def main():
             print()
             print("       Use [-v | --version] for version information.")
         elif sys.argv[1] == '-v' or sys.argv[1] == '--version':
-            print(f"v{version_number}")
-            print(credits)
-            print(start_date)
-            print(last_update)
+            print(f"v{VERSION_NUMBER}")
+            print(CREDITS)
+            print(START_DATE)
+            print(LAST_UPDATE)
 
         sys.exit()
     elif len(sys.argv) == 3:
