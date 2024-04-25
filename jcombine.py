@@ -8,7 +8,7 @@ def has_main_method(file) -> bool:
         while True:
             line = input_file.readline()
 
-            if line.startswith("public static void main"):
+            if line.strip().startswith("public static void main"):
                 return True
 
             if not line:
