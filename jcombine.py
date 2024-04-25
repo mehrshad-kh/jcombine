@@ -3,6 +3,11 @@
 import os
 import sys
 
+version_number = "1.0.0"
+credits = "Created by Mehrshad Khansarian at Tehran Polytechnic"
+start_date = "Started Ordibehesht '82"
+last_update = "Last updated Ordibehesht '83"
+
 def has_main_method(file) -> bool:
     with open(file, "r", encoding="utf-8") as input_file:
         while True:
@@ -65,7 +70,15 @@ def main():
             print("usage: python3 jcombine.py source_dir target_file")
             print("       A source file with the same name as the target file ")
             print("       must be present in the source directory (or its subdirectories).")
-            sys.exit()
+            print()
+            print("       Use [-v | --version] for version information.")
+        elif sys.argv[1] == '-v' or sys.argv[1] == '--version':
+            print(f"v{version_number}")
+            print(credits)
+            print(start_date)
+            print(last_update)
+
+        sys.exit()
     elif len(sys.argv) == 3:
         directory_path = sys.argv[1]
         output_file_path = sys.argv[2]
